@@ -4,6 +4,7 @@ import { TextControls } from '../components/TextControls';
 import type { TextConfig } from '../components/TextControls';
 import { BackdropCanvas } from '../components/BackdropCanvas';
 import type { BackdropCanvasHandle } from '../components/BackdropCanvas';
+import { SEO } from '../components/SEO';
 
 export const Editor: React.FC = () => {
     const canvasRef = useRef<BackdropCanvasHandle>(null);
@@ -32,10 +33,20 @@ export const Editor: React.FC = () => {
     };
 
     return (
-        <div className="editor-container">
+        <div className="editor-page">
+            <SEO
+                title="Editor"
+                description="Upload your image and add professional text backdrops."
+                url="https://ashishmahawal.github.io/backdrop_editor/editor"
+            />
+            {/* Header Controls */}
+            <div className="editor-header">
+                <ImageUploader onImageUpload={setImage} />
+            </div>
             {!image ? (
                 <div className="placeholder">
-                    <ImageUploader onImageUpload={setImage} />
+                    {/* ImageUploader is now in editor-header, so this placeholder can be simpler or removed if not needed */}
+                    <p>Upload an image to get started.</p>
                 </div>
             ) : (
                 <div className="main-content">

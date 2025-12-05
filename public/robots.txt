@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ashishmahawal.github.io/backdrop_editor/sitemap.xml

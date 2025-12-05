@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Layers, Type, Download, Zap, Palette } from 'lucide-react';
+import { SEO } from '../components/SEO';
 import './Home.css';
 
 export const Home: React.FC = () => {
     return (
         <div className="home-container">
+            <SEO />
             <section className="hero">
                 <div className="hero-content">
                     <h1 className="hero-title">
