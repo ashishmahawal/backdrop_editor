@@ -149,29 +149,40 @@ export const BackdropCanvas = React.forwardRef<BackdropCanvasHandle, BackdropCan
                 const y = textConfig.y || canvas.height / 2;
                 textPosRef.current = { x, y };
 
-                if (textConfig.isGradient) {
-                    const metrics = textCtx.measureText(textConfig.text);
-                    const textWidth = metrics.width;
-                    const textHeight = textConfig.fontSize;
-                    const angleRad = (textConfig.gradientAngle * Math.PI) / 180;
-                    const halfWidth = textWidth / 2;
-                    const halfHeight = textHeight / 2;
+                // Handle text transformation
+                const textContent = textConfig.isUppercase ? textConfig.text.toUpperCase() : textConfig.text;
+                const lines = textContent.split('\n');
+                const lineHeight = textConfig.fontSize * 1.1; // 1.1 line height
+                const totalHeight = lineHeight * lines.length;
+                const startY = y - (totalHeight / 2) + (lineHeight / 2);
 
-                    const gradient = textCtx.createLinearGradient(
-                        x - halfWidth * Math.cos(angleRad),
-                        y - halfHeight * Math.sin(angleRad),
-                        x + halfWidth * Math.cos(angleRad),
-                        y + halfHeight * Math.sin(angleRad)
-                    );
+                lines.forEach((line, index) => {
+                    const lineY = startY + (index * lineHeight);
 
-                    gradient.addColorStop(0, textConfig.gradientStart);
-                    gradient.addColorStop(1, textConfig.gradientEnd);
-                    textCtx.fillStyle = gradient;
-                } else {
-                    textCtx.fillStyle = textConfig.color;
-                }
+                    if (textConfig.isGradient) {
+                        const metrics = textCtx.measureText(line);
+                        const textWidth = metrics.width;
+                        const textHeight = textConfig.fontSize;
+                        const angleRad = (textConfig.gradientAngle * Math.PI) / 180;
+                        const halfWidth = textWidth / 2;
+                        const halfHeight = textHeight / 2;
 
-                textCtx.fillText(textConfig.text, x, y);
+                        const gradient = textCtx.createLinearGradient(
+                            x - halfWidth * Math.cos(angleRad),
+                            lineY - halfHeight * Math.sin(angleRad),
+                            x + halfWidth * Math.cos(angleRad),
+                            lineY + halfHeight * Math.sin(angleRad)
+                        );
+
+                        gradient.addColorStop(0, textConfig.gradientStart);
+                        gradient.addColorStop(1, textConfig.gradientEnd);
+                        textCtx.fillStyle = gradient;
+                    } else {
+                        textCtx.fillStyle = textConfig.color;
+                    }
+
+                    textCtx.fillText(line, x, lineY);
+                });
                 textCtx.restore();
 
                 // 3. Apply Depth Occlusion

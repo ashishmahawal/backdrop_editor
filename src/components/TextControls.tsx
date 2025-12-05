@@ -14,6 +14,7 @@ export interface TextConfig {
     gradientEnd: string;
     gradientAngle: number;
     depth: number; // 0 = Front, 100 = Back
+    isUppercase: boolean;
 }
 
 interface TextControlsProps {
@@ -32,12 +33,23 @@ export const TextControls: React.FC<TextControlsProps> = ({ config, onChange }) 
 
             <div className="control-group">
                 <label>Text Content</label>
-                <input
-                    type="text"
+                <textarea
                     value={config.text}
                     onChange={(e) => handleChange('text', e.target.value)}
                     placeholder="Enter backdrop text..."
+                    rows={3}
                 />
+            </div>
+
+            <div className="control-group">
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={config.isUppercase}
+                        onChange={(e) => handleChange('isUppercase', e.target.checked)}
+                    />
+                    Uppercase
+                </label>
             </div>
 
             <div className="control-group">

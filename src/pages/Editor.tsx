@@ -21,7 +21,8 @@ export const Editor: React.FC = () => {
         gradientStart: '#ffffff',
         gradientEnd: '#000000',
         gradientAngle: 45,
-        depth: 0
+        depth: 0,
+        isUppercase: false
     });
 
     const handleSave = () => {

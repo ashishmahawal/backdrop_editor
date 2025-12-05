@@ -23,22 +23,29 @@
     color: var(--text-secondary);
 }
 
-.control-group input[type="text"],
-.control-group input[type="number"],
-.control-group select {
+.text-controls input[type="text"],
+.text-controls input[type="number"],
+.text-controls select,
+.text-controls textarea {
     width: 100%;
-    padding: 0.6rem;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-color);
-    color: var(--text-color);
-    font-family: inherit;
-    box-sizing: border-box;
+    color: white;
+    font-size: 14px;
+    transition: all 0.2s;
 }
 
-.control-group input[type="text"]:focus,
-.control-group input[type="number"]:focus,
-.control-group select:focus {
+.text-controls textarea {
+    resize: vertical;
+    font-family: inherit;
+}
+
+.text-controls input[type="text"]:focus,
+.text-controls input[type="number"]:focus,
+.text-controls select:focus,
+.text-controls textarea:focus {
     outline: none;
     border-color: var(--primary-color);
 }
