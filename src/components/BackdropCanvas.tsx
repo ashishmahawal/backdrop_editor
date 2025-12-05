@@ -110,7 +110,7 @@ export const BackdropCanvas = React.forwardRef<BackdropCanvasHandle, BackdropCan
             }
         }, [image]);
 
-        const draw = () => {
+        const draw = (overrideX?: number, overrideY?: number) => {
             if (!image || !canvasRef.current) return;
 
             const canvas = canvasRef.current;
@@ -145,8 +145,10 @@ export const BackdropCanvas = React.forwardRef<BackdropCanvasHandle, BackdropCan
                 textCtx.textAlign = 'center';
                 textCtx.textBaseline = 'middle';
 
-                const x = textConfig.x || canvas.width / 2;
-                const y = textConfig.y || canvas.height / 2;
+                const x = overrideX ?? (textConfig.x || canvas.width / 2);
+                const y = overrideY ?? (textConfig.y || canvas.height / 2);
+
+                // Update ref only if not overriding (sync with props) or if overriding (sync with drag)
                 textPosRef.current = { x, y };
 
                 // Handle text transformation
@@ -269,14 +271,29 @@ export const BackdropCanvas = React.forwardRef<BackdropCanvasHandle, BackdropCan
             const coords = getCanvasCoordinates(e);
             if (!coords) return;
 
-            onConfigChange({
-                ...textConfig,
-                x: coords.x - dragStartRef.current.x,
-                y: coords.y - dragStartRef.current.y
-            });
+            const newX = coords.x - dragStartRef.current.x;
+            const newY = coords.y - dragStartRef.current.y;
+
+            // Draw immediately with new coordinates
+            requestAnimationFrame(() => draw(newX, newY));
         };
 
-        const handleMouseUp = () => {
+        const handleMouseUp = (e: React.MouseEvent | React.TouchEvent) => {
+            if (!isDragging || !dragStartRef.current || !onConfigChange) return;
+
+            // Finalize position
+            const coords = getCanvasCoordinates(e);
+            if (coords) {
+                const newX = coords.x - dragStartRef.current.x;
+                const newY = coords.y - dragStartRef.current.y;
+
+                onConfigChange({
+                    ...textConfig,
+                    x: newX,
+                    y: newY
+                });
+            }
+
             setIsDragging(false);
             dragStartRef.current = null;
         };
