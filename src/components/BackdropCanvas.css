@@ -16,6 +16,8 @@
     max-height: 600px;
     object-fit: contain;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    touch-action: none;
+    /* Prevent scrolling on mobile while dragging */
 }
 
 .backdrop-canvas-container {

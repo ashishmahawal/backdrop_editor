@@ -240,6 +240,11 @@ export const BackdropCanvas = React.forwardRef<BackdropCanvasHandle, BackdropCan
         };
 
         const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+            // Prevent default behavior for touch events to avoid scrolling/zooming
+            if ('touches' in e) {
+                // e.preventDefault(); // Commented out as passive listeners might complain, relying on touch-action CSS
+            }
+
             const coords = getCanvasCoordinates(e);
             if (!coords) return;
 
